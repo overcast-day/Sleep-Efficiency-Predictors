@@ -201,9 +201,9 @@ backward_model_RMSE
 rbind(full_model_RMSE,forward_model_RMSE,backward_model_RMSE) |>
   arrange(RMSE)
 
-#linear and quadratic model fitting
 model1 <- lm(Sleep.efficiency~Deep.sleep.percentage+Awakenings+REM.sleep.percentage+Age+Exercise.frequency+Smoking.status + Gender + Alcohol.consumption,data=data)
-model2 <- lm(Sleep.efficiency~Deep.sleep.percentage+Awakenings+REM.sleep.percentage+Age+Exercise.frequency+Smoking.status+ Alcohol.consumption,data=data)
+#model2 <- lm(Sleep.efficiency~Deep.sleep.percentage+Awakenings+REM.sleep.percentage+Age+Exercise.frequency+Smoking.status+ Alcohol.consumption,data=data)
+model2 <- lm(Sleep.efficiency~Deep.sleep.percentage+Awakenings+REM.sleep.percentage+Age+Smoking.status,data=data)
 model2b <- lm(Sleep.efficiency~Deep.sleep.percentage+Awakenings+REM.sleep.percentage+Age+Exercise.frequency+Smoking.status+ Alcohol.consumption,data=data)
 #summary(model1)
 summary(model2)
@@ -216,21 +216,22 @@ summary(model2)
 #model5 <- lm(Sleep.efficiency~Deep.sleep.percentage+Awakenings+REM.sleep.percentage+Age+Exercise.frequency+Smoking.status+Smoking.status*Alcohol.consumption+Deep.sleep.percentage*Awakenings+REM.sleep.percentage*Awakenings,data=data)
 
 #summary(model5)
-model6 <- lm(Sleep.efficiency~Deep.sleep.percentage+Awakenings+REM.sleep.percentage+Age+Exercise.frequency+Smoking.status+Smoking.status*Alcohol.consumption+Deep.sleep.percentage*Awakenings+REM.sleep.percentage*Awakenings+Caffeine.consumption+Caffeine.consumption*Sleep.duration+Smoking.status*Sleep.duration+Alcohol.consumption*Sleep.duration,data=data)
+model6 <- lm(Sleep.efficiency~Deep.sleep.percentage+Awakenings+REM.sleep.percentage+Age+Smoking.status+Deep.sleep.percentage*Awakenings+REM.sleep.percentage*Awakenings,data=data)
 summary(model6)
 
 
 #model6 is best model with interaction, model 2 is the best one to choose if no interaction.
 model7<- lm(Sleep.efficiency~Light.sleep.percentage+Awakenings+Age+Exercise.frequency,data=data)
-summary(model7)
-#Forward Selection model
+#summary(model7)
+#Forward Selction model
 
-# model1q is the best quadratic model without interactions, model2q with interactions
-model1q <- lm(Sleep.efficiency~I(Awakenings^2)+I(Deep.sleep.percentage^2)+I(Alcohol.consumption^2)+Deep.sleep.percentage+Awakenings+REM.sleep.percentage+Age+Exercise.frequency+Smoking.status+ Alcohol.consumption,data=data)
+
+#model1q <- lm(Sleep.efficiency~I(Awakenings^2)+I(Deep.sleep.percentage^2)+I(Alcohol.consumption^2)+Deep.sleep.percentage+Awakenings+REM.sleep.percentage+Age+Smoking.status,data=data)
+model1q <- lm(Sleep.efficiency~I(Awakenings^2)+I(Deep.sleep.percentage^2)+Deep.sleep.percentage+Awakenings+REM.sleep.percentage+Age+Smoking.status,data=data)
 summary(model1q)
-model2q <- lm(Sleep.efficiency~I(Awakenings^2)+I(Deep.sleep.percentage^2)+I(Alcohol.consumption^2)+Deep.sleep.percentage+Awakenings+REM.sleep.percentage+Age+Exercise.frequency+Smoking.status+ Alcohol.consumption+Deep.sleep.percentage*Awakenings+REM.sleep.percentage*Awakenings+Caffeine.consumption+Caffeine.consumption*Sleep.duration+Smoking.status*Sleep.duration+Alcohol.consumption*Sleep.duration,data=data)
+#model2q <- lm(Sleep.efficiency~I(Awakenings^2)+I(Deep.sleep.percentage^2)+I(Alcohol.consumption^2)+Deep.sleep.percentage+Awakenings+REM.sleep.percentage+Age+Exercise.frequency+Smoking.status+ Alcohol.consumption+Deep.sleep.percentage*Awakenings+REM.sleep.percentage*Awakenings+Caffeine.consumption+Caffeine.consumption*Sleep.duration+Smoking.status*Sleep.duration+Alcohol.consumption*Sleep.duration,data=data)
+model2q <- lm(Sleep.efficiency~I(Awakenings^2)+I(Deep.sleep.percentage^2)+Deep.sleep.percentage+Awakenings+REM.sleep.percentage+Age+Smoking.status+Deep.sleep.percentage*Awakenings+REM.sleep.percentage*Awakenings,data=data)
 summary(model2q)
-
 #checking rmse of fitted values of model
 rmse(model2$fitted.values, data$Sleep.efficiency)
 rmse(model6$fitted.values, data$Sleep.efficiency)
