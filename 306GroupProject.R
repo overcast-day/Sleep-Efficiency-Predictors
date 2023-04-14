@@ -187,7 +187,7 @@ backward_select <- summary(regsubsets(x=Sleep.efficiency~.,
                                       nvmax=11,
                                       data=step_data_train,
                                       method="backward"))
-backward_cp <- tibble(var=1:10,cp=backward_select$cp) |>
+backward_cp <- tibble(var=1:8,cp=backward_select$cp) |>
   arrange(cp)
 backward_select
 backward_cp
@@ -245,7 +245,7 @@ plot1 <- ggplot(p1, aes(x=p1$model2.fitted.values, y = p1$model2.residuals)) + g
 plot1
 
 p2 <- data.frame(data$Deep.sleep.percentage, model6$fitted.values, model6$residuals)
-head(p1)
+head(p2)
 plot2 <- ggplot(p2, aes(x=p2$model6.fitted.values, y = p2$model6.residuals)) + geom_point(aes(colour = p2$data.Deep.sleep.percentage))
 plot2
 
@@ -255,7 +255,7 @@ plotq1 <- ggplot(pq1, aes(x=pq1$model1q.fitted.values, y = pq1$model1q.residuals
 plotq1
 
 p2q <- data.frame(data$Deep.sleep.percentage, model2q$fitted.values, model2q$residuals)
-head(p1)
+head(p2q)
 plot2q <- ggplot(p2q, aes(x=p2q$model2q.fitted.values, y = p2q$model2q.residuals)) + geom_point(aes(colour = p2q$data.Deep.sleep.percentage))
 plot2q
 
