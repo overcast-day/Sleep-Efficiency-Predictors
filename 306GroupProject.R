@@ -147,8 +147,7 @@ plot_grid(plot_genderbysmoke,boxplot_gendersmoke,plot_smokebygender, ncol=3)
 #model selection - creating training and testing sets and rmse function
 set.seed(2023)
 
-step_data <- data |>
-  select(-c(Smoking.status,Gender))
+step_data <- data
 step_data$ID <- 1:n
 step_data_train <- sample_n(step_data,size=0.5*n,replace=FALSE)
 step_data_test <- anti_join(step_data,step_data_train,by="ID")
@@ -171,30 +170,30 @@ full_model_RMSE
 
 #forward and backward selection
 forward_select <- summary(regsubsets(x=Sleep.efficiency~.,
-                                     nvmax=9,
-                                     data=step_data_train,
-                                     method="forward"))
-forward_cp <- tibble(var=1:8,cp=forward_select$cp) |>
-  arrange(cp)
+                                    nvmax=9,
+                                    data=step_data_train,
+                                    method="forward"))
+forward_cp <- tibble(var=1:10,cp=forward_select$cp) |>
+    arrange(cp)
 forward_select
 forward_cp
-forward_model <- lm(Sleep.efficiency~Light.sleep.percentage+Awakenings+Age+Exercise.frequency,data=step_data_train)
+forward_model <- lm(Sleep.efficiency~Light.sleep.percentage+Awakenings+Smoking.status+Age+Exercise.frequency+Deep.sleep.percentage+Alcohol.consumption+Caffeine.consumption,data=step_data_train)
 pre_forward_model <- predict(forward_model,step_data_test)
 forward_model_RMSE <- tibble(Model="Forward Model",
                              RMSE=rmse(step_data_train$Sleep.efficiency,pre_forward_model))
 forward_model_RMSE
 backward_select <- summary(regsubsets(x=Sleep.efficiency~.,
-                                      nvmax=11,
-                                      data=step_data_train,
-                                      method="backward"))
-backward_cp <- tibble(var=1:8,cp=backward_select$cp) |>
-  arrange(cp)
+                                    nvmax=11,
+                                    data=step_data_train,
+                                    method="backward"))
+backward_cp <- tibble(var=1:10,cp=backward_select$cp) |>
+    arrange(cp)
 backward_select
 backward_cp
-backward_model <- lm(Sleep.efficiency~Deep.sleep.percentage+Awakenings+REM.sleep.percentage+Age+Exercise.frequency,data=step_data_train)
+backward_model <-lm(Sleep.efficiency~Deep.sleep.percentage+Awakenings+REM.sleep.percentage+Smoking.status+Age+Exercise.frequency+Alcohol.consumption+Caffeine.consumption,data=step_data_train)
 pre_backward_model <- predict(backward_model,step_data_test)
 backward_model_RMSE <- tibble(Model="Backward Model",
-                              RMSE=rmse(step_data_train$Sleep.efficiency,pre_backward_model))
+                             RMSE=rmse(step_data_train$Sleep.efficiency,pre_backward_model))
 backward_model_RMSE
 
 #rmse comparison of models
